@@ -51,7 +51,7 @@ app.use("/api/v2/coupon", coupon);
 app.use("/api/v2/payment", payment);
 app.use("/api/v2/withdraw", withdraw);
 
-// it's for ErrorHandlings
+// it's for ErrorHandlingss
 app.use(ErrorHandler);
 
 module.exports = app;
