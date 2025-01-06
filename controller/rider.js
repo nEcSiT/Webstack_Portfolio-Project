@@ -86,7 +86,7 @@ router.post("/create-rider", catchAsyncErrors(async (req, res, next) => {
 
     const activationToken = createActivationToken(delivery);
 
-    const activationUrl = `https://fivestarwaakye-rider.vercel.app/delivery/activation/${activationToken}`;
+    const activationUrl = `http://localhost:3000/delivery/activation/${activationToken}`;
 
     try {
       await sendMail({

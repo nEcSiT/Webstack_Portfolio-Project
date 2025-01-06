@@ -6,9 +6,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 app.use(cors({
-  origin: ['https://fivestarwaakye-restaurant.vercel.app',
-          'https://fivestarwaakye-customer.vercel.app',
-            'https://fivestarwaakye-rider.vercel.app',
+  origin: [
           'http://localhost:3000',],
   credentials: true
 }));
