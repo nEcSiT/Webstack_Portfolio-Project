@@ -9,26 +9,17 @@ const sendMail = require("../utils/sendMail");
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
 
-const multer = require('multer');
-
-// Set up storage for multer
-const storage = multer.memoryStorage();
-const upload = multer({ storage });
-
-// Modify the route to handle file upload
-router.post("/create-user", upload.single("avatar"), async (req, res, next) => {
+// create user
+router.post("/create-user", async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
-    const avatar = req.file; // access the uploaded file
-
+    const { name, email, password, avatar } = req.body;
     const userEmail = await User.findOne({ email });
 
     if (userEmail) {
       return next(new ErrorHandler("User already exists", 400));
     }
 
-    // Upload image to Cloudinary
-    const myCloud = await cloudinary.v2.uploader.upload(avatar.buffer, {
+    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
       folder: "avatars",
     });
 
@@ -44,7 +35,7 @@ router.post("/create-user", upload.single("avatar"), async (req, res, next) => {
 
     const activationToken = createActivationToken(user);
 
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+    const activationUrl = `http://localhost:3002/activation/${activationToken}`;
 
     try {
       await sendMail({
@@ -54,7 +45,7 @@ router.post("/create-user", upload.single("avatar"), async (req, res, next) => {
       });
       res.status(201).json({
         success: true,
-        message: `Please check your email:- ${user.email} to activate your account!`,
+        message: `please check your email:- ${user.email} to activate your account!`,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
@@ -63,7 +54,6 @@ router.post("/create-user", upload.single("avatar"), async (req, res, next) => {
     return next(new ErrorHandler(error.message, 400));
   }
 });
-
 
 // create activation token
 const createActivationToken = (user) => {
