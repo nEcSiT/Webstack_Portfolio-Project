@@ -1,17 +1,14 @@
-import { useRouter } from 'next/router';
+// app/pages/signup.js or app/pages/signup.tsx (depending on your setup)
+import React from "react";
+import SignUpForm from "@/app/components/Customers/Signup/SignUp";
 
-const ActivationPage = () => {
-  const router = useRouter();
-  const { token } = router.query;
-
-  // Logic to handle the token (e.g., verify the activation code)
-
+const SignUpPage = () => {
   return (
-    <div>
-      <h1>Account Activation</h1>
-      <p>Your activation code: {token}</p>
+    <div className="signup-container">
+      <h1 className="text-center text-2xl font-semibold">Sign Up</h1>
+      <SignUpForm />
     </div>
   );
 };
 
-export default ActivationPage;
+export default SignUpPage;
