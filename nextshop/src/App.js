@@ -44,54 +44,65 @@ function App() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 border border-gray-300 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-center mb-4">Sign Up</h2>
+    <div className="max-w-md mx-auto p-6 bg-white border border-gray-300 rounded-lg shadow-xl">
+      <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Sign Up</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-4">
+        <div className="mb-6">
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
           <input
             type="text"
             id="name"
             {...register('name', { required: 'Name is required' })}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-3 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           />
-          {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+          {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
         </div>
 
-        <div className="mb-4">
+        <div className="mb-6">
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
           <input
             type="email"
             id="email"
             {...register('email', { required: 'Email is required' })}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-3 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
         </div>
 
-        <div className="mb-4">
+        <div className="mb-6">
           <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
           <input
             type="password"
             id="password"
             {...register('password', { required: 'Password is required' })}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-3 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           />
-          {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+          {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
         </div>
 
-        <div className="mb-4">
+        <div className="mb-6">
           <label htmlFor="avatar" className="block text-sm font-medium text-gray-700">Avatar</label>
           <input
             type="file"
             id="avatar"
             onChange={handleAvatarChange}
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-3 mt-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
           />
-          {avatar && <p className="text-gray-600 text-sm mt-2">{avatar.name}</p>}
+          {avatar && (
+            <div className="mt-2">
+              <img
+                src={avatar}
+                alt="Avatar preview"
+                className="w-16 h-16 object-cover rounded-full border-2 border-gray-300"
+              />
+            </div>
+          )}
         </div>
 
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">
+        <button
+          type="submit"
+          className="w-full py-3 bg-blue-500 text-white text-lg rounded-md hover:bg-blue-600 focus:ring-4 focus:ring-blue-200 transition"
+        >
           Sign Up
         </button>
       </form>
