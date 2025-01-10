@@ -9,17 +9,26 @@ const sendMail = require("../utils/sendMail");
 const sendToken = require("../utils/jwtToken");
 const { isAuthenticated, isAdmin } = require("../middleware/auth");
 
-// create user
-router.post("/create-user", async (req, res, next) => {
+const multer = require('multer');
+
+// Set up storage for multer
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+// Modify the route to handle file upload
+router.post("/create-user", upload.single("avatar"), async (req, res, next) => {
   try {
-    const { name, email, password, avatar } = req.body;
+    const { name, email, password } = req.body;
+    const avatar = req.file; // access the uploaded file
+
     const userEmail = await User.findOne({ email });
 
     if (userEmail) {
       return next(new ErrorHandler("User already exists", 400));
     }
 
-    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+    // Upload image to Cloudinary
+    const myCloud = await cloudinary.v2.uploader.upload(avatar.buffer, {
       folder: "avatars",
     });
 
@@ -45,7 +54,7 @@ router.post("/create-user", async (req, res, next) => {
       });
       res.status(201).json({
         success: true,
-        message: `please check your email:- ${user.email} to activate your account!`,
+        message: `Please check your email:- ${user.email} to activate your account!`,
       });
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
@@ -54,6 +63,7 @@ router.post("/create-user", async (req, res, next) => {
     return next(new ErrorHandler(error.message, 400));
   }
 });
+
 
 // create activation token
 const createActivationToken = (user) => {
