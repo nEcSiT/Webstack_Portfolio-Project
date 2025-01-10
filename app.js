@@ -4,20 +4,31 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require("path");
 
 app.use(cors({
   origin: [
-          'http://localhost:3000',],
+    'http://localhost:3000',
+  ],
   credentials: true
 }));
 
 app.use(express.json({ limit: '5000mb' }));
 app.use(cookieParser());
-app.use("/test", (req, res) => {
-  res.send("Hello world!");
-});
-
 app.use(bodyParser.urlencoded({ extended: true, limit: '5000mb' }));
+
+// Return an HTML file if the client accepts HTML, otherwise return JSON
+app.get("/", (req, res) => {
+  // Check if the client accepts HTML
+  if (req.accepts('html')) {
+    res.sendFile(path.join(__dirname, "success.html"));
+  } else {
+    // Otherwise, return a JSON response
+    res.json({
+      message: "Success! All servers connected"
+    });
+  }
+});
 
 // config
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -51,7 +62,7 @@ app.use("/api/v2/coupon", coupon);
 app.use("/api/v2/payment", payment);
 app.use("/api/v2/withdraw", withdraw);
 
-// it's for ErrorHandlingss
+// it's for ErrorHandling
 app.use(ErrorHandler);
 
 module.exports = app;
